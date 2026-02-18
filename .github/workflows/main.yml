@@ -11,18 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Record start time
+        run: echo "PIPELINE_START=$(date +%s)" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Print build info
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Branch: $GITHUB_REF_NAME"
-          echo "Run number: $GITHUB_RUN_NUMBER"
-          echo "This is a simple CI test job."
 
       - name: Dummy build step
         run: |
           echo "Simulating some work..."
           sleep 10
           echo "Done."
+
+      - name: Calculate and print duration
+        run: |
+          END=$(date +%s)
+          DURATION=$((END-PIPELINE_START))
+          echo "Pipeline duration (seconds): $DURATION"
